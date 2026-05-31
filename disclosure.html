@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Professional Disclosure | My Comfy Couch Counseling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Caveat:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #6a8f5e;
+      --sage-light: #96b88a;
+      --sage-pale: #c8d9c2;
+      --sage-dark: #3e5c34;
+      --lavender: #ece9f4;
+      --cream: #f8f6f1;
+      --warm-white: #fdfcf9;
+      --charcoal: #18181a;
+      --ink: #0e0e10;
+      --warm-gray: #6a6a6a;
+      --mid-gray: #9a9a9a;
+      --white: #ffffff;
+      --border: rgba(106,143,94,0.18);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--charcoal);
+      background: var(--warm-white);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:20px;
+      padding:14px clamp(20px, 4vw, 56px);
+      background:rgba(253,252,249,0.95);
+      backdrop-filter:blur(18px);
+      box-shadow:0 1px 0 var(--border);
+    }
+    .nav-logo {
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(0.85rem, 2vw, 1rem); font-weight:600;
+      color:var(--sage-dark); line-height:1.3;
+      letter-spacing:0.01em; transition:color 0.4s; text-decoration:none;
+      flex-shrink:0;
+    }
+    .nav-links {
+      display:flex; gap:clamp(14px, 2.5vw, 36px);
+      list-style:none; align-items:center;
+      flex:1; justify-content:flex-end; min-width:0; flex-wrap:nowrap;
+    }
+    .nav-links a {
+      text-decoration:none; font-size:0.78rem; font-weight:400;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--warm-gray); position:relative; transition:color 0.3s;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-3px; left:0; right:0;
+      height:1px; background:currentColor;
+      transform:scaleX(0); transform-origin:right;
+      transition:transform 0.3s ease;
+    }
+    .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
+    .nav-cta {
+      background:var(--charcoal) !important; color:var(--white) !important;
+      padding:10px clamp(14px, 2vw, 26px) !important; border-radius:2px;
+      letter-spacing:0.08em !important; font-weight:500 !important;
+      white-space:nowrap; flex-shrink:0;
+    }
+    .nav-cta::after { display:none !important; }
+    .nav-cta:hover { background:var(--sage-dark) !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { width:22px; height:1.5px; background:var(--charcoal); transition:0.3s; }
+
+    /* DISCLOSURE CONTENT */
+    .page-header {
+      padding: 160px 56px 60px;
+      background: var(--lavender);
+      text-align: center;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .page-header p {
+      font-size: 0.9rem;
+      color: var(--warm-gray);
+      letter-spacing: 0.05em;
+    }
+    
+    .disclosure-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 80px 56px;
+    }
+    .disclosure-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--sage-dark);
+      margin: 48px 0 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .disclosure-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin: 24px 0 12px;
+    }
+    .disclosure-content p {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--warm-gray);
+      margin-bottom: 18px;
+      font-weight: 300;
+    }
+    .disclosure-content ul {
+      margin-bottom: 24px;
+      padding-left: 24px;
+    }
+    .disclosure-content li {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--warm-gray);
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+    .contact-card {
+      background: var(--cream);
+      padding: 32px;
+      border-radius: 4px;
+      border: 1px solid var(--sage-pale);
+      margin-bottom: 40px;
+    }
+    
+    /* TABLE STYLING */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 32px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+    }
+    th, td {
+      border: 1px solid var(--sage-pale);
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th {
+      background: var(--sage);
+      color: var(--white);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+    td { color: var(--warm-gray); }
+    tr:nth-child(even) { background: var(--warm-white); }
+
+    /* SIGNATURE BLOCK */
+    .signature-block {
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 2px solid var(--cream);
+    }
+    .signature-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 24px;
+    }
+    .sig-line {
+      flex: 1;
+      border-bottom: 1px solid var(--charcoal);
+      position: relative;
+    }
+    .sig-line span {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+    }
+    .date-line {
+      width: 180px;
+      border-bottom: 1px solid var(--charcoal);
+      position: relative;
+    }
+    .date-line span {
+      position: absolute;
+      top: 10px;
+      left: 0;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+    }
+
+    /* FOOTER */
+    footer { background:var(--ink); color:rgba(255,255,255,0.5); padding:72px 0 40px; }
+    .container { max-width:1080px; margin:0 auto; padding:0 56px; }
+    .footer-top {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; color:var(--white); line-height:1.3; max-width:280px; }
+    .footer-brand small { display:block; font-size:0.78rem; font-family:'DM Sans',sans-serif; color:var(--sage-light); letter-spacing:0.08em; margin-top:10px; font-style:normal; }
+    .footer-cols { display:flex; gap:72px; }
+    .footer-col h4 { color:rgba(255,255,255,0.28); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.18em; margin-bottom:18px; font-weight:400; }
+    .footer-col p, .footer-col a { font-size:0.86rem; line-height:2; color:rgba(255,255,255,0.48); text-decoration:none; display:block; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--sage-light); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:rgba(255,255,255,0.22); }
+
+    @media (max-width:1100px) {
+      .nav-links a { font-size:0.72rem; letter-spacing:0.1em; }
+    }
+    @media (max-width:900px) {
+      .disclosure-container, .page-header { padding-left: 28px; padding-right: 28px; }
+      nav { padding: 14px 24px; flex-wrap:wrap; }
+      .nav-links {
+        display:none; flex:1 1 100%; flex-direction:column; align-items:stretch;
+        order:3; gap:0; padding:0;
+      }
+      .nav-links.open {
+        display:flex; position:absolute;
+        top:100%; left:0; right:0; background:var(--warm-white);
+        padding:20px 24px 24px; border-top:1px solid var(--border); gap:4px;
+        box-shadow:0 12px 24px rgba(14,14,16,0.06);
+      }
+      .nav-links.open li { width:100%; }
+      .nav-links.open a {
+        display:block; color:var(--warm-gray); font-size:0.88rem;
+        padding:12px 0; letter-spacing:0.1em;
+      }
+      .nav-links.open .nav-cta {
+        margin-top:8px; padding:14px 20px !important; text-align:center;
+        align-self:stretch;
+      }
+      .hamburger { display:flex; margin-left:auto; }
+      .signature-row { flex-direction: column; gap: 40px; }
+      .footer-top { flex-direction:column; gap:40px; }
+      .footer-cols { flex-direction:column; gap:32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+    <a href="index.html" class="nav-logo">My Comfy Couch<br>Counseling</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#about-intro">About</a></li>
+      <li><a href="index.html#about-me">Meet Amy</a></li>
+      <li><a href="disclosure.html">Disclosure Statement</a></li>
+      <li><a href="crisis.html">Crisis Management</a></li>
+      <li><a href="index.html" class="nav-cta">Back to Home</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+<header class="page-header">
+  <h1>LCMHC Professional Disclosure Statement</h1>
+  <p>Please review this document to understand my background, counseling approaches, and your rights.</p>
+</header>
+
+<main class="disclosure-container">
+  <div class="disclosure-content">
+    
+    <div class="contact-card">
+      <h3>Mary Amy L. Cooper, MA, LCAS, LCMHC, NCC, CSI</h3>
+      <p>
+        <strong>My Comfy Couch Counseling, PLLC</strong><br>
+        1442 East Main Street, PMB 126, Lincolnton, NC 28092<br>
+        Office: 980-389-4291<br>
+        amycooper@mycomfycouchcounseling.com      </p>
+    </div>
+
+    <p>Welcome, and thank you for allowing me to take part in your counseling process. This statement will inform you of my background, counseling approaches, and your rights. This document is mandated by both North Carolina Administrative Codes Rule .0204 of Chapter 53, Title 21 and the LPC Act Section 90343. If you have any questions, please feel free to discuss them with me at any time.</p>
+
+    <h2>Qualifications</h2>
+    <p>I am pleased to welcome you to my private practice, My Comfy Couch Counseling, PLLC. I earned my Master of Arts in Clinical Mental Health Counseling from Lenoir-Rhyne University in 2020. I hold the following credentials in the state of North Carolina:</p>
+    <ul>
+      <li>Licensed Clinical Mental Health Counselor (LCMHC #17134)</li>
+      <li>Licensed Clinical Addiction Specialist (LCAS #26622)</li>
+      <li>Certified Clinical Supervisor Intern (CSI #22575)</li>
+    </ul>
+    <p>Services are provided through My Comfy Couch Counseling, PLLC, an independent private practice entity registered in the state of North Carolina.</p>
+
+    <h2>Restricted Licensure</h2>
+    <p>I am a Licensed Clinical Mental Health Counselor (LCMHC #17134) and a Licensed Clinical Addiction Specialist (LCAS #26622). In addition to my clinical practice, I am a Certified Clinical Supervisor Intern (CSI #22575) approved by the North Carolina Addictions Specialist Professional Practice Board (NCASPPB). In my capacity as a CSI, I provide clinical supervision services under the direction of Wendy Hendricks, CCS (#20166). You may contact my supervisor at 828-471-7003 or wendyhendricks241@gmail.com should you have any questions regarding my performance as a clinical supervisor.</p>
+
+    <h2>Counseling Background</h2>
+    <p>I define the role of a professional counselor as someone who helps the client become the most positive form of themself through facilitating awareness within the client. My therapeutic approach has a holistic framework. My natural interaction is grounded in a Person-centered/Humanistic approach. However, I often use a non-directive Cognitive Behavioral method during my individual and group sessions. I believe the client can begin to materialize new internal and external resources to become a healthier individual by setting achievable goals and effective strategies while utilizing the gifts and talents the client possesses.</p>
+    
+    <p>My counseling services address concerns or issues including, but not limited to:</p>
+    <ul>
+      <li>Alcohol and substance use</li>
+      <li>Addiction</li>
+      <li>Depression</li>
+      <li>Anxiety</li>
+      <li>Shame, self-esteem, and self-image</li>
+      <li>Grief and loss</li>
+      <li>Trauma</li>
+      <li>ADHD</li>
+      <li>Autism Spectrum Disorder</li>
+    </ul>
+
+    <h2>Session Fees and Length of Service</h2>
+    <p>Appointments will ordinarily be 50 minutes in duration, once per week at a time we agree on, although some sessions may be more or less frequent as needed. The time scheduled for your appointment is assigned to you and you alone. If you need to cancel or reschedule a session, I ask that you provide me with 24 hours’ notice. In addition, you are responsible for coming to your session on time. If you are late, your session will end at the scheduled time. Please understand that if you are beyond 10 minutes late, you will be asked to reschedule.</p>
+    <p><strong>Cancellation & No-Show Policy:</strong> Clients using private insurance or private pay will be charged a $50.00 fee for any "no-show" or appointment cancelled with less than 24 hours' notice. Please note that insurance companies do not typically reimburse for missed appointments; therefore, this fee is the sole responsibility of the client.</p>
+
+    <h3>Fee Schedule</h3>
+    <p>The standard fee for a session is $125.00. Sliding scale fees are offered based on gross annual income and family size according to the chart below.</p>
+    
+    <div class="table-responsive">
+      <table>
+        <thead>
+          <tr>
+            <th>Family Size</th>
+            <th>$50 Fee</th>
+            <th>$70 Fee</th>
+            <th>$90 Fee</th>
+            <th>$125 Fee</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>$0 – $31,920</td>
+            <td>$31,921 – $47,880</td>
+            <td>$47,881 – $63,840</td>
+            <td>$63,841+</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>$0 – $43,280</td>
+            <td>$43,281 – $64,920</td>
+            <td>$64,921 – $86,560</td>
+            <td>$86,561+</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>$0 – $54,640</td>
+            <td>$54,641 – $81,960</td>
+            <td>$81,961 – $109,280</td>
+            <td>$109,281+</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>$0 – $66,000</td>
+            <td>$66,001 – $99,000</td>
+            <td>$99,001 – $132,000</td>
+            <td>$132,001+</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>$0 – $77,360</td>
+            <td>$77,361 – $116,040</td>
+            <td>$116,041 – $154,720</td>
+            <td>$154,721+</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Our agreed-upon fee for services is: $__________ per session.</p>
+    <p>Currently, I accept BCBS, Aetna, United Health, MedCost, Cigna, AmBetter, Medicaid, and private/personal payments. If paying privately, you are responsible for paying at the time of your session unless prior arrangements have been made. Payment can be made by check, cash, or credit card.</p>
+
+    <h2>Use of Diagnosis</h2>
+    <p>Some health insurance companies will reimburse clients for counseling services, and some will not. In addition, most will require a diagnosis of a mental-health or substance use condition and indicate that you must have an “illness” before they will agree to reimburse you. Some conditions for which people seek counseling do not qualify for reimbursement. If a qualifying diagnosis is appropriate in your case, I will inform you of the diagnosis before we submit the diagnosis to the health insurance company. Any diagnosis made will become part of your permanent insurance records.</p>
+
+    <h2>Confidentiality</h2>
+    <p>All of our communication, including diagnoses, becomes part of the clinical record, which is accessible to you upon request (unless doing so would be psychologically harmful). I will keep confidential anything that you say to me, with the following exceptions: a) you direct me to tell someone else, b) I determine that you are a danger to yourself or others, c) I am ordered by a court to disclose information, d) I suspect or am made aware of physical/sexual abuse of minors, persons with disabilities, or seniors, e) I am working collaboratively with other professionals where disclosure of personal information is necessary to provide optimal care, and/or f) you are a minor for whom confidentiality is limited to the extent exercised by your parent/legal guardian.</p>
+    <p>In instances where clients participate in group counseling, I cannot guarantee confidentiality from other group members. However, I will do everything I can to ensure all group members understand confidentiality policies and that breaching confidentiality results in automatic dismissal from the group.</p>
+    <p>Please note: Your signing of this Therapist-Client Informed Consent and Services Agreement which provides permission to exchange information for coordination of care, consultation, and exchange of relevant information including but not limited to diagnosis, history and assessment, progress in treatment and counseling sessions between My Comfy Couch Counseling, PLLC and any other medical or mental health providers. Coordination of care is necessary for patient safety.</p>
+
+    <h2>Complaints</h2>
+    <p>Although clients are encouraged to discuss any concerns with me, you may file a complaint against me with the organizations below should you feel I am in violation of any codes of ethics. I abide by the ACA Code of Ethics, the NCBLCMHC Laws and Code of Ethics, and the NCASPPB Ethics Rules.</p>
+    <ul>
+      <li><strong>North Carolina Board of Licensed Clinical Mental Health Counselors</strong><br>
+      P.O. Box 77819 Greensboro, NC 27417<br>
+      Phone: 844-622-3572 or 336-217-6007<br>
+      Fax: 336-217-9450<br>
+      E-mail: Complaints@ncblcmhc.org</li>
+      
+      <li style="margin-top: 16px;"><strong>North Carolina Addictions Specialist Professional Practice Board</strong><br>
+      P.O. Box 10126 Raleigh, NC 27605<br>
+      Ethical complaint form: https://www.ncsappb.org/ethical-complaint-form/</li>
+    </ul>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        My Comfy Couch<br>Counseling, PLLC
+        <small>A soft place for hard conversations</small>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Location</h4>
+          <p>1442 East Main Street, PMB 126</p>
+          <p>Lincolnton, NC 28092</p>
+          <p style="margin-top:10px; color:rgba(255,255,255,0.28);">Telehealth available statewide in NC</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:9803894291">(980) 389-4291</a>
+          <a href="mailto:amycooper@mycomfycouchcounseling.com">amycooper@mycomfycouchcounseling.com</a>
+          <a href="https://mycomfycouchcounseling.com" target="_blank">mycomfycouchcounseling.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 My Comfy Couch Counseling, PLLC. All rights reserved.</span>
+      <span>Lincolnton, NC</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* MOBILE NAV */
+  function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) document.getElementById('navLinks').classList.remove('open');
+  }, { passive: true });
+</script>
+</body>
+</html>

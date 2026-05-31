@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crisis Support | My Comfy Couch Counseling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Caveat:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #6a8f5e;
+      --sage-light: #96b88a;
+      --sage-pale: #c8d9c2;
+      --sage-dark: #3e5c34;
+      --lavender: #ece9f4;
+      --cream: #f8f6f1;
+      --warm-white: #fdfcf9;
+      --charcoal: #18181a;
+      --ink: #0e0e10;
+      --warm-gray: #6a6a6a;
+      --mid-gray: #9a9a9a;
+      --white: #ffffff;
+      --border: rgba(106,143,94,0.18);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--charcoal);
+      background: var(--warm-white);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:20px;
+      padding:14px clamp(20px, 4vw, 56px);
+      background:rgba(253,252,249,0.95);
+      backdrop-filter:blur(18px);
+      box-shadow:0 1px 0 var(--border);
+    }
+    .nav-logo {
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(0.85rem, 2vw, 1rem); font-weight:600;
+      color:var(--sage-dark); line-height:1.3;
+      letter-spacing:0.01em; transition:color 0.4s; text-decoration:none;
+      flex-shrink:0;
+    }
+    .nav-links {
+      display:flex; gap:clamp(14px, 2.5vw, 36px);
+      list-style:none; align-items:center;
+      flex:1; justify-content:flex-end; min-width:0; flex-wrap:nowrap;
+    }
+    .nav-links a {
+      text-decoration:none; font-size:0.78rem; font-weight:400;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:var(--warm-gray); position:relative; transition:color 0.3s;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-3px; left:0; right:0;
+      height:1px; background:currentColor;
+      transform:scaleX(0); transform-origin:right;
+      transition:transform 0.3s ease;
+    }
+    .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
+    .nav-cta {
+      background:var(--charcoal) !important; color:var(--white) !important;
+      padding:10px clamp(14px, 2vw, 26px) !important; border-radius:2px;
+      letter-spacing:0.08em !important; font-weight:500 !important;
+      white-space:nowrap; flex-shrink:0;
+    }
+    .nav-cta::after { display:none !important; }
+    .nav-cta:hover { background:var(--sage-dark) !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { width:22px; height:1.5px; background:var(--charcoal); transition:0.3s; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 160px 56px 60px;
+      background: var(--lavender);
+      text-align: center;
+    }
+    .page-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 16px;
+    }
+    .page-header p {
+      font-size: 0.95rem;
+      color: var(--warm-gray);
+      letter-spacing: 0.05em;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+    
+    /* CRISIS CONTENT */
+    .crisis-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 80px 56px;
+    }
+    .crisis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .crisis-text-block {
+      position: sticky;
+      top: 120px;
+    }
+    .crisis-text-block h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: var(--sage-dark);
+      margin-bottom: 24px;
+    }
+    .crisis-text-block p {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: var(--warm-gray);
+      margin-bottom: 18px;
+      font-weight: 300;
+    }
+    
+    .crisis-cards { display: flex; flex-direction: column; gap: 24px; }
+    .crisis-card {
+      background: var(--white); padding: 36px; border-radius: 4px;
+      border: 1px solid var(--border); transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .crisis-card:hover {
+      transform: translateY(-4px); box-shadow: 0 12px 24px rgba(106,143,94,0.06);
+    }
+    .crisis-card h3 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+      font-weight: 600; color: var(--charcoal); margin-bottom: 8px;
+    }
+    .crisis-card p {
+      font-size: 0.9rem; color: var(--warm-gray); margin-bottom: 20px; font-weight: 300; line-height: 1.6;
+    }
+    .crisis-link {
+      display: inline-block; font-size: 1rem; font-weight: 500;
+      color: var(--sage-dark); text-decoration: none; position: relative; cursor: pointer;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .crisis-link::after {
+      content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+      height: 1px; background: currentColor; transform: scaleX(0);
+      transform-origin: right; transition: transform 0.3s ease;
+    }
+    .crisis-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+    /* FOOTER */
+    footer { background:var(--ink); color:rgba(255,255,255,0.5); padding:72px 0 40px; margin-top: 40px; }
+    .container { max-width:1080px; margin:0 auto; padding:0 56px; }
+    .footer-top {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; color:var(--white); line-height:1.3; max-width:280px; }
+    .footer-brand small { display:block; font-size:0.78rem; font-family:'DM Sans',sans-serif; color:var(--sage-light); letter-spacing:0.08em; margin-top:10px; font-style:normal; }
+    .footer-cols { display:flex; gap:72px; }
+    .footer-col h4 { color:rgba(255,255,255,0.28); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.18em; margin-bottom:18px; font-weight:400; }
+    .footer-col p, .footer-col a { font-size:0.86rem; line-height:2; color:rgba(255,255,255,0.48); text-decoration:none; display:block; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--sage-light); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:rgba(255,255,255,0.22); }
+
+    @media (max-width:1100px) {
+      .nav-links a { font-size:0.72rem; letter-spacing:0.1em; }
+    }
+    @media (max-width:900px) {
+      .crisis-grid { grid-template-columns: 1fr; gap: 48px; }
+      .crisis-text-block { position: static; }
+      .crisis-container, .page-header { padding-left: 28px; padding-right: 28px; }
+      nav { padding: 14px 24px; flex-wrap:wrap; }
+      .nav-links {
+        display:none; flex:1 1 100%; flex-direction:column; align-items:stretch;
+        order:3; gap:0; padding:0;
+      }
+      .nav-links.open {
+        display:flex; position:absolute;
+        top:100%; left:0; right:0; background:var(--warm-white);
+        padding:20px 24px 24px; border-top:1px solid var(--border); gap:4px;
+        box-shadow:0 12px 24px rgba(14,14,16,0.06);
+      }
+      .nav-links.open li { width:100%; }
+      .nav-links.open a {
+        display:block; color:var(--warm-gray); font-size:0.88rem;
+        padding:12px 0; letter-spacing:0.1em;
+      }
+      .nav-links.open .nav-cta {
+        margin-top:8px; padding:14px 20px !important; text-align:center;
+        align-self:stretch;
+      }
+      .hamburger { display:flex; margin-left:auto; }
+      .footer-top { flex-direction:column; gap:40px; }
+      .footer-cols { flex-direction:column; gap:32px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+    <a href="index.html" class="nav-logo">My Comfy Couch<br>Counseling</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html#about-intro">About</a></li>
+      <li><a href="index.html#about-me">Meet Amy</a></li>
+      <li><a href="disclosure.html">Disclosure Statement</a></li>
+      <li><a href="crisis.html">Crisis Management</a></li>
+      <li><a href="index.html" class="nav-cta">Back to Home</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+<header class="page-header">
+  <h1>Emergency Resources</h1>
+  <p>You do not have to navigate a crisis alone. Free, confidential, and immediate help is available 24 hours a day, 7 days a week.</p>
+</header>
+
+<main class="crisis-container">
+  <div class="crisis-grid">
+    
+    <!-- Context Text Block -->
+    <div class="crisis-text-block">
+      <h2>Please Do Not Wait</h2>
+      <p>While I am deeply committed to your healing journey and long-term recovery, My Comfy Couch Counseling does not provide 24/7 on-call crisis services.</p>
+      <p>If you are experiencing a medical emergency, a life-threatening mental health crisis, or are in immediate danger of harming yourself or others, please prioritize your safety and reach out to emergency services immediately.</p>
+      <p>The resources listed on this page are staffed by trained professionals who are ready to listen, support, and guide you through difficult moments day or night.</p>
+    </div>
+
+    <!-- Resource Cards -->
+    <div class="crisis-cards">
+      
+      <div class="crisis-card">
+        <h3>Suicide &amp; Crisis Lifeline</h3>
+        <p>Free, confidential support for people in distress, prevention, and crisis resources. Available 24/7 via call or text.</p>
+        <a href="tel:988" class="crisis-link">Call or Text 988</a>
+      </div>
+      
+      <div class="crisis-card">
+        <h3>Crisis Text Line</h3>
+        <p>Connect with a volunteer crisis counselor 24/7. It is completely free, confidential, and accessible from anywhere in the US.</p>
+        <a href="sms:741741?body=HOME" class="crisis-link">Text "HOME" to 741741</a>
+      </div>
+
+      <div class="crisis-card">
+        <h3>Veterans Crisis Line</h3>
+        <p>Connect with the Veterans Crisis Line to reach caring, qualified responders with the Department of Veterans Affairs.</p>
+        <a href="tel:988" class="crisis-link" style="margin-right: 15px;">Dial 988, then Press 1</a>
+      </div>
+
+      <div class="crisis-card">
+        <h3>The Trevor Project</h3>
+        <p>Information and support to LGBTQ young people 24/7, all year round.</p>
+        <a href="tel:18664887386" class="crisis-link">Call (866) 488-7386</a>
+      </div>
+      
+      <div class="crisis-card" style="border-color: #e0ddd8; background: #fdfcf9;">
+        <h3>Emergency Services</h3>
+        <p>For immediate medical emergencies, dispatch, or immediate physical safety concerns.</p>
+        <a href="tel:911" class="crisis-link" style="color: #c0392b;">Call 911</a>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        My Comfy Couch<br>Counseling, PLLC
+        <small>A soft place for hard conversations</small>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Location</h4>
+          <p>1442 East Main Street, PMB 126</p>
+          <p>Lincolnton, NC 28092</p>
+          <p style="margin-top:10px; color:rgba(255,255,255,0.28);">Telehealth available statewide in NC</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:9803894291">(980) 389-4291</a>
+          <a href="mailto:amycooper@mycomfycouchcounseling.com">amycooper@mycomfycouchcounseling.com</a>
+          <a href="https://mycomfycouchcounseling.com" target="_blank">mycomfycouchcounseling.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 My Comfy Couch Counseling, PLLC. All rights reserved.</span>
+      <span>Lincolnton, NC</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* MOBILE NAV */
+  function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) document.getElementById('navLinks').classList.remove('open');
+  }, { passive: true });
+</script>
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Comfy Couch Counseling | A soft place for hard conversations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Caveat:wght@400;600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --sage: #6a8f5e;
+      --sage-light: #96b88a;
+      --sage-pale: #c8d9c2;
+      --sage-dark: #3e5c34;
+      --lavender: #ece9f4;
+      --cream: #f8f6f1;
+      --warm-white: #fdfcf9;
+      --charcoal: #18181a;
+      --ink: #0e0e10;
+      --warm-gray: #6a6a6a;
+      --mid-gray: #9a9a9a;
+      --white: #ffffff;
+      --border: rgba(106,143,94,0.18);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--charcoal);
+      background: var(--warm-white);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:200;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:20px;
+      padding:24px clamp(20px, 4vw, 56px);
+      transition: padding 0.4s, background 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      padding:14px clamp(20px, 4vw, 56px);
+      background:rgba(253,252,249,0.95);
+      backdrop-filter:blur(18px);
+      box-shadow:0 1px 0 var(--border);
+    }
+    .nav-logo {
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(0.85rem, 2vw, 1rem); font-weight:600;
+      color:var(--white); line-height:1.3;
+      letter-spacing:0.01em; transition:color 0.4s;
+      flex-shrink:0; text-decoration:none;
+    }
+    nav.scrolled .nav-logo { color:var(--sage-dark); }
+    .nav-links {
+      display:flex; gap:clamp(14px, 2.5vw, 36px);
+      list-style:none; align-items:center;
+      flex:1; justify-content:flex-end; min-width:0; flex-wrap:nowrap;
+    }
+    .nav-links a {
+      text-decoration:none; font-size:0.78rem; font-weight:400;
+      letter-spacing:0.12em; text-transform:uppercase;
+      color:rgba(255,255,255,0.8); position:relative; transition:color 0.3s;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-3px; left:0; right:0;
+      height:1px; background:currentColor;
+      transform:scaleX(0); transform-origin:right;
+      transition:transform 0.3s ease;
+    }
+    .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
+    nav.scrolled .nav-links a { color:var(--warm-gray); }
+    .nav-cta {
+      background:var(--charcoal) !important; color:var(--white) !important;
+      padding:10px clamp(14px, 2vw, 26px) !important; border-radius:2px;
+      letter-spacing:0.08em !important; font-weight:500 !important;
+      white-space:nowrap; flex-shrink:0;
+    }
+    .nav-cta::after { display:none !important; }
+    .nav-cta:hover { background:var(--sage-dark) !important; }
+    .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+    .hamburger span { width:22px; height:1.5px; background:var(--white); transition:0.3s; }
+    nav.scrolled .hamburger span { background:var(--charcoal); }
+
+    /* HERO */
+    #hero {
+      position:relative; height:100vh; min-height:640px;
+      display:flex; align-items:center; justify-content:center;
+      overflow:hidden;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background-image:url('Images/mycomycouchheropage.jpg');
+      background-size:cover; background-position:center 40%;
+      filter:brightness(0.46) saturate(0.72);
+      will-change:transform;
+    }
+    .hero-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(160deg, rgba(10,22,8,0.32) 0%, rgba(5,12,4,0.6) 100%);
+    }
+    .hero-content {
+      position:relative; text-align:center; color:var(--white); padding:0 32px;
+    }
+    .hero-eyebrow {
+      display:inline-block; font-size:0.7rem; letter-spacing:0.25em;
+      text-transform:uppercase; color:var(--sage-light); margin-bottom:28px;
+      opacity:0; transform:translateY(14px);
+      animation:heroIn 0.9s 0.2s ease forwards;
+    }
+    .hero-content h1 {
+      font-family:'Cormorant Garamond', serif;
+      font-size:clamp(3.2rem, 8vw, 6.5rem); font-weight:300;
+      line-height:1.04; color:var(--white); margin-bottom:24px;
+      opacity:0; transform:translateY(20px);
+      animation:heroIn 1s 0.4s ease forwards;
+    }
+    .hero-content h1 em { font-style:italic; color:var(--sage-light); }
+    .hero-tagline {
+      font-family:'Caveat', cursive;
+      font-size:clamp(1.4rem, 2.8vw, 2.1rem);
+      color:rgba(255,255,255,0.78);
+      opacity:0; transform:translateY(16px);
+      animation:heroIn 1s 0.65s ease forwards;
+    }
+    .hero-cta-wrap {
+      margin-top:48px;
+      opacity:0; transform:translateY(16px);
+      animation:heroIn 1s 0.85s ease forwards;
+    }
+    .btn-primary {
+      display:inline-block; background:transparent; color:var(--white);
+      padding:14px 44px; border:1px solid rgba(255,255,255,0.45); border-radius:2px;
+      font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:400;
+      letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; cursor:pointer;
+      transition:background 0.3s, border-color 0.3s, transform 0.25s;
+    }
+    .btn-primary:hover { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.8); transform:translateY(-2px); }
+    @keyframes heroIn { to { opacity:1; transform:translateY(0); } }
+    .hero-scroll-line {
+      position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      color:rgba(255,255,255,0.4); font-size:0.67rem; letter-spacing:0.2em; text-transform:uppercase;
+      opacity:0; animation:heroIn 1s 1.2s ease forwards;
+    }
+    .scroll-line-track {
+      width:1px; height:50px;
+      background:rgba(255,255,255,0.18); position:relative; overflow:hidden;
+    }
+    .scroll-line-track::after {
+      content:''; position:absolute; top:-50%; left:0; right:0;
+      height:50%; background:var(--sage-light);
+      animation:scrollDrop 2.2s 1.5s ease infinite;
+    }
+    @keyframes scrollDrop { 0%{top:-50%} 100%{top:150%} }
+
+    /* SECTIONS */
+    section { padding:120px 0; }
+    .container { max-width:1080px; margin:0 auto; padding:0 56px; }
+
+    /* ABOUT INTRO */
+    #about-intro { background:var(--lavender); overflow:hidden; }
+    .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+    .about-img-wrap {
+      position:relative; border-radius:4px; overflow:hidden; aspect-ratio:4/5;
+    }
+    .about-img-wrap img, .about-img-wrap video {
+      width:100%; height:100%; object-fit:cover;
+      transform:scale(1.06); transition:transform 0.7s ease;
+    }
+    .about-img-wrap:hover img, .about-img-wrap:hover video { 
+      transform:scale(1.02); 
+    }
+    .about-img-wrap::before {
+      content:''; position:absolute; inset:0; z-index:1;
+      background:linear-gradient(to top, rgba(14,14,16,0.25) 0%, transparent 60%);
+    }
+    .about-caption {
+      position:absolute; bottom:24px; left:24px; z-index:2;
+      font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem;
+      color:rgba(255,255,255,0.82); letter-spacing:0.03em;
+    }
+    .about-text { padding-left:8px; }
+    .section-label {
+      display:inline-block; font-size:0.7rem; letter-spacing:0.22em;
+      text-transform:uppercase; color:var(--sage); margin-bottom:20px;
+    }
+    .about-text h2 {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2rem, 4vw, 3.1rem); font-weight:400;
+      line-height:1.12; margin-bottom:32px; letter-spacing:-0.01em;
+    }
+    .about-text h2 em { font-style:italic; color:var(--sage-dark); }
+    .about-text p { font-size:0.95rem; line-height:1.9; color:var(--warm-gray); margin-bottom:18px; font-weight:300; }
+
+   /* INSURANCE CAROUSEL */
+   #insurance-carousel { 
+      background: var(--cream); 
+      padding: 90px 0; 
+      overflow: hidden; 
+    }
+    .carousel-title {
+      text-align: center;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid-gray);
+      margin-bottom: 48px;
+    }
+    .carousel-track-wrap {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    }
+    .carousel-track {
+      display: flex;
+      width: max-content;
+      animation: scrollCarousel 35s linear infinite;
+    }
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+    .carousel-group {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+      padding-right: 80px;
+    }
+    .carousel-group img {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+      filter: grayscale(100%) opacity(0.65);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+    .carousel-group img:hover {
+      filter: grayscale(0%) opacity(1);
+      transform: scale(1.05);
+    }
+    
+    @keyframes scrollCarousel {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ABOUT ME */
+    #about-me { background:var(--warm-white); }
+    .about-me-grid { display:grid; grid-template-columns:300px 1fr; gap:80px; align-items:start; }
+    .therapist-card { display:flex; flex-direction:column; gap:18px; position:sticky; top:110px; }
+    .therapist-photo-wrap {
+      position:relative; border-radius:4px; overflow:hidden; aspect-ratio:3/4;
+    }
+    .therapist-photo-wrap::after {
+      content:''; position:absolute; inset:0;
+      box-shadow:inset 0 0 0 1px rgba(106,143,94,0.22);
+    }
+    .therapist-photo {
+      width:100%; height:100%; object-fit:cover; object-position:top;
+      display:block; background:linear-gradient(135deg,#c8d8c5,#a8bca5);
+    }
+    .therapist-name { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:600; letter-spacing:0.02em; }
+    .therapist-creds { font-size:0.75rem; color:var(--mid-gray); letter-spacing:0.08em; text-transform:uppercase; margin-top:-10px; }
+    .btn-email {
+      display:inline-block; border:1px solid var(--charcoal); color:var(--charcoal); background:transparent;
+      padding:10px 24px; border-radius:2px; font-family:'DM Sans',sans-serif; font-size:0.76rem; font-weight:400;
+      letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; text-decoration:none; align-self:flex-start;
+      transition:background 0.25s, color 0.25s, transform 0.2s;
+    }
+    .btn-email:hover { background:var(--charcoal); color:var(--white); transform:translateY(-2px); }
+    .social-row { display:flex; gap:12px; }
+    .social-icon {
+      width:34px; height:34px; border-radius:50%; border:1px solid #d8d8d8;
+      display:flex; align-items:center; justify-content:center; color:var(--mid-gray); text-decoration:none;
+      transition:border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .social-icon:hover { border-color:var(--sage); color:var(--sage); transform:scale(1.12); }
+    .about-me-text h2 { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:400; margin-bottom:32px; }
+    .about-me-text p { font-size:0.95rem; line-height:1.9; color:var(--warm-gray); margin-bottom:18px; font-weight:300; }
+
+    /* TAGLINE BAND */
+    #contact-section { background:var(--ink); padding:130px 0; position:relative; overflow:hidden; }
+    .tagline-bg-text {
+      position:absolute; bottom:-0.12em; left:-0.04em;
+      font-family:'Cormorant Garamond',serif; font-size:28vw; font-weight:700; font-style:italic;
+      color:rgba(255,255,255,0.025); white-space:nowrap; pointer-events:none; user-select:none; line-height:1;
+    }
+    .tagline-grid { display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:60px; position:relative; z-index:1; }
+    .tagline-content { display:flex; flex-direction:column; align-items:flex-start; }
+    .tagline-visual { display:flex; align-items:center; justify-content:flex-end; }
+    .tagline-pre { font-size:0.7rem; letter-spacing:0.22em; text-transform:uppercase; color:var(--sage-light); margin-bottom:24px; display:block; }
+    .tagline-words {
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(3.5rem, 7.5vw, 6rem); font-weight:300; line-height:1.05;
+      color:var(--white); letter-spacing:-0.01em;
+    }
+    .tagline-words span {
+      display:block; opacity:0; transform:translateX(-32px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .tagline-words span.visible { opacity:1; transform:translateX(0); }
+    .tagline-words span:nth-child(2) { transition-delay:0.14s; }
+    .tagline-words span:nth-child(3) { transition-delay:0.28s; }
+    .tagline-cta { margin-top:48px; }
+    .btn-book {
+      display:inline-block; background:var(--white); color:var(--charcoal);
+      padding:15px 46px; border-radius:2px; font-family:'DM Sans',sans-serif;
+      font-weight:500; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;
+      cursor:pointer; border:none; text-decoration:none;
+      transition:background 0.25s, color 0.25s, transform 0.25s;
+    }
+    .btn-book:hover { background:var(--sage); color:var(--white); transform:translateY(-2px); }
+    .blob-img-wrap {
+      width:100%; aspect-ratio:4/3; overflow:hidden;
+      clip-path:polygon(15% 0%, 100% 5%, 90% 95%, 0% 100%);
+      border-radius:4px;
+    }
+    .blob-img-wrap img {
+      width:100%; height:100%; object-fit:cover; object-position:center;
+      transform:scaleX(-1);
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display:none; position:fixed; inset:0;
+      background:rgba(10,10,12,0.72); z-index:999;
+      align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(6px);
+    }
+    .modal-overlay.open { display:flex; }
+    .modal {
+      background:var(--warm-white); border-radius:4px;
+      width:100%; max-width:540px; max-height:90vh; overflow-y:auto; padding:52px;
+      position:relative; animation:modalIn 0.35s cubic-bezier(.22,.68,0,1.2) both;
+    }
+    @keyframes modalIn { from{opacity:0;transform:scale(0.94) translateY(24px);} to{opacity:1;transform:scale(1) translateY(0);} }
+    .modal-close {
+      position:absolute; top:20px; right:20px; width:36px; height:36px;
+      border:none; background:none; cursor:pointer; font-size:1.1rem; color:var(--mid-gray);
+      display:flex; align-items:center; justify-content:center; border-radius:50%; transition:background 0.2s;
+    }
+    .modal-close:hover { background:var(--lavender); }
+    .modal h3 { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:400; margin-bottom:6px; }
+    .modal .modal-sub { color:var(--mid-gray); font-size:0.88rem; margin-bottom:32px; font-weight:300; }
+    .modal-tabs { display:flex; margin-bottom:32px; border-bottom:1px solid rgba(0,0,0,0.09); }
+    .modal-tab {
+      padding:10px 22px; font-family:'DM Sans',sans-serif; font-weight:400; font-size:0.8rem;
+      letter-spacing:0.08em; text-transform:uppercase; border:none; background:none; cursor:pointer;
+      color:var(--mid-gray); border-bottom:2px solid transparent; margin-bottom:-1px; transition:color 0.2s, border-color 0.2s;
+    }
+    .modal-tab.active { color:var(--sage-dark); border-bottom-color:var(--sage); }
+    .tab-pane { display:none; }
+    .tab-pane.active { display:block; }
+    .form-group { margin-bottom:18px; }
+    .form-group label { display:block; font-size:0.72rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:7px; color:var(--charcoal); }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; padding:12px 14px; border:1px solid #e0ddd8; border-radius:3px;
+      font-family:'DM Sans',sans-serif; font-size:0.93rem; color:var(--charcoal);
+      background:var(--white); outline:none; transition:border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--sage); }
+    .form-group textarea { resize:vertical; min-height:100px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .btn-submit {
+      width:100%; background:var(--charcoal); color:var(--white); padding:14px; border:none; border-radius:3px;
+      font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase;
+      cursor:pointer; transition:background 0.2s; margin-top:10px;
+    }
+    .btn-submit:hover { background:var(--sage-dark); }
+    .form-success { display:none; text-align:center; padding:48px 0; }
+    .form-success .check { font-size:2rem; margin-bottom:16px; display:block; color:var(--sage); }
+    .form-success h4 { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:400; margin-bottom:8px; }
+    .form-success p { color:var(--mid-gray); font-weight:300; font-size:0.92rem; }
+
+    /* FOOTER */
+    footer { background:var(--ink); color:rgba(255,255,255,0.5); padding:72px 0 40px; }
+    .footer-top {
+      display:flex; justify-content:space-between; align-items:flex-start;
+      margin-bottom:60px; padding-bottom:60px; border-bottom:1px solid rgba(255,255,255,0.07);
+    }
+    .footer-brand { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; color:var(--white); line-height:1.3; max-width:280px; }
+    .footer-brand small { display:block; font-size:0.78rem; font-family:'DM Sans',sans-serif; color:var(--sage-light); letter-spacing:0.08em; margin-top:10px; font-style:normal; }
+    .footer-cols { display:flex; gap:72px; }
+    .footer-col h4 { color:rgba(255,255,255,0.28); font-size:0.67rem; text-transform:uppercase; letter-spacing:0.18em; margin-bottom:18px; font-weight:400; }
+    .footer-col p, .footer-col a { font-size:0.86rem; line-height:2; color:rgba(255,255,255,0.48); text-decoration:none; display:block; transition:color 0.2s; }
+    .footer-col a:hover { color:var(--sage-light); }
+    .footer-bottom { display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; color:rgba(255,255,255,0.22); }
+
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:32px; right:32px; background:var(--charcoal); color:var(--white);
+      padding:12px 22px; border-radius:3px; font-size:0.84rem; z-index:9999;
+      transform:translateY(60px); opacity:0; transition:transform 0.4s cubic-bezier(.22,.68,0,1.2), opacity 0.4s;
+    }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity:0; transform:translateY(36px); transition:opacity 0.85s cubic-bezier(.22,.68,0,1), transform 0.85s cubic-bezier(.22,.68,0,1); }
+    .reveal.from-left { transform:translateX(-36px); }
+    .reveal.from-right { transform:translateX(36px); }
+    .reveal.visible { opacity:1; transform:translate(0,0); }
+    .reveal-d1 { transition-delay:0.1s; }
+    .reveal-d2 { transition-delay:0.2s; }
+    .reveal-d3 { transition-delay:0.3s; }
+
+    @media (max-width:1100px) {
+      .nav-links a { font-size:0.72rem; letter-spacing:0.1em; }
+    }
+
+    /* === RESPONSIVE FIXES FOR MOBILE === */
+    @media (max-width:900px) {
+      section { padding: 80px 0; }
+      .container { padding:0 24px; }
+      nav { padding:16px 24px; flex-wrap:wrap; }
+      nav.scrolled { padding:12px 24px; }
+      
+      .nav-links {
+        display:none; flex:1 1 100%; flex-direction:column; align-items:stretch;
+        order:3; gap:0; padding:0;
+      }
+      .nav-links.open {
+        display:flex; position:absolute;
+        top:100%; left:0; right:0; background:var(--warm-white);
+        padding:20px 24px 24px; border-top:1px solid var(--border); gap:4px;
+        box-shadow:0 12px 24px rgba(14,14,16,0.06);
+      }
+      .nav-links.open li { width:100%; }
+      .nav-links.open a {
+        display:block; color:var(--warm-gray); font-size:0.88rem;
+        padding:12px 0; letter-spacing:0.1em;
+      }
+      .nav-links.open .nav-cta {
+        margin-top:8px; padding:14px 20px !important; text-align:center;
+        align-self:stretch;
+      }
+      .hamburger { display:flex; margin-left:auto; }
+      
+      /* Grid adjustments */
+      .about-grid, .about-me-grid { 
+        grid-template-columns:1fr; 
+        gap:48px; 
+      }
+      #contact-section { padding:80px 0; }
+      .tagline-grid { gap:28px; align-items:center; }
+      .tagline-words { font-size:clamp(1.75rem, 4.5vw, 2.8rem); }
+      .tagline-pre { font-size:0.62rem; margin-bottom:16px; }
+      .tagline-cta { margin-top:28px; }
+      .btn-book { padding:12px 22px; font-size:0.72rem; }
+      #contact-section .blob-img-wrap { max-width:none; margin:0; }
+      
+      /* Scale Images to fit beautifully on mobile screens */
+      .about-img-wrap {
+        max-width: 100%; 
+        aspect-ratio: 16/9; /* Use a landscape orientation to save screen space */
+        margin: 0 auto;
+      }
+      .therapist-card { 
+        position:static; 
+        align-items: center; /* Center the therapist content block */
+        text-align: center;
+      }
+      .therapist-photo-wrap {
+        max-width: 250px; /* Constrain portrait photo width */
+        width: 100%;
+        margin: 0 auto;
+      }
+      .btn-email { 
+        align-self: center; /* Center button */
+      } 
+      .blob-img-wrap {
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      
+      #insurance-carousel { padding: 70px 0; }
+      .carousel-group { gap: 50px; padding-right: 50px; }
+      .carousel-group img { height: 35px; }
+      
+      /* Adjust footer and forms */
+      .footer-top { flex-direction:column; gap:40px; }
+      .footer-cols { flex-direction:column; gap:32px; }
+      .modal { padding:36px 24px; }
+      .form-row { grid-template-columns:1fr; }
+    }
+    
+    @media (max-width: 600px) {
+      .hero-content h1 { font-size: 2.8rem; }
+      .tagline-grid { gap:20px; }
+      .tagline-words { font-size:clamp(1.5rem, 4.2vw, 2rem); }
+      .tagline-cta { margin-top:20px; }
+      .btn-book { padding:10px 16px; font-size:0.65rem; letter-spacing:0.06em; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="navbar">
+      <a href="index.html" class="nav-logo">My Comfy Couch<br>Counseling</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#about-intro">About</a></li>
+        <li><a href="index.html#about-me">Meet Amy</a></li>
+        <li><a href="disclosure.html">Disclosure Statement</a></li>
+        <li><a href="crisis.html">Crisis Management</a></li>
+        <li><a href="index.html" class="nav-cta">Back to Home</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger" onclick="toggleNav()">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Lincolnton, North Carolina &nbsp;&middot;&nbsp; Telehealth Available</span>
+    <h1>My Comfy <em>Couch</em><br>Counseling</h1>
+    <p class="hero-tagline">A soft place for hard conversations</p>
+    <div class="hero-cta-wrap">
+      <a href="#" class="btn-primary theranest-booking-link" target="_blank" rel="noopener noreferrer">Request an Appointment</a>
+    </div>
+  </div>
+  <div class="hero-scroll-line">
+    <div class="scroll-line-track"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<section id="about-intro">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-wrap reveal from-left">
+          <!-- Replaced <img> with an autoplaying, muted <video> tag -->
+          <video src="Images/hapsad.mp4" autoplay loop muted playsinline aria-label="Therapy session"></video>
+          <span class="about-caption">You are worthy of grace and healing.</span>
+        </div>
+        <div class="about-text reveal from-right">
+          <span class="section-label">The Practice</span>
+          <h2>Life is hard,<br>your therapy<br><em>shouldn&rsquo;t be</em></h2>
+          <p>At My Comfy Couch Counseling, the goal is simple: to provide a sanctuary where you can finally just be human. I believe therapy shouldn&rsquo;t feel clinical or cold&mdash;it should feel like a deep breath.</p>
+          <p>My purpose is to offer a non-judgmental space where adolescents and adults can unpack the weight of trauma, addiction, and anxiety. We exist to help you bridge the gap between where you are and where you want to be, turning vulnerability into resilience.</p>
+          <p>Here, you aren&rsquo;t a diagnosis or a case file; you are a person worthy of grace, healing, and a soft place to land.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="insurance-carousel">
+    <div class="container">
+      <h3 class="carousel-title">Accepted Insurances & Medicaid Plans</h3>
+      <div class="carousel-track-wrap reveal">
+        <div class="carousel-track">
+          <!-- FIRST SET OF LOGOS -->
+          <div class="carousel-group">
+            <img src="Images/aetna.webp" alt="Aetna" />
+            <img src="Images/ambetter.webp" alt="Ambetter" />
+            <img src="Images/bluecross.webp" alt="BlueCross BlueShield" />
+            <img src="Images/cigna.webp" alt="Cigna" />
+            <img src="Images/medicaid.webp" alt="Medicaid" />
+            <img src="Images/medicare.webp" alt="Medicare" />
+            <img src="Images/united.webp" alt="UnitedHealthcare" />
+          </div>
+          <!-- DUPLICATED SET (Required for the seamless infinite scroll) -->
+          <div class="carousel-group">
+            <img src="Images/aetna.webp" alt="Aetna" />
+            <img src="Images/ambetter.webp" alt="Ambetter" />
+            <img src="Images/bluecross.webp" alt="BlueCross BlueShield" />
+            <img src="Images/cigna.webp" alt="Cigna" />
+            <img src="Images/medicaid.webp" alt="Medicaid" />
+            <img src="Images/medicare.webp" alt="Medicare" />
+            <img src="Images/united.webp" alt="UnitedHealthcare" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section id="about-me">
+  <div class="container">
+    <div class="about-me-grid">
+      <div class="therapist-card reveal from-left">
+        <div class="therapist-photo-wrap">
+          <img class="therapist-photo"
+            src="Images/ma.jpg"
+            alt="Amy Cooper, MA LCAS LCMHC CSI" />
+        </div>
+        <div class="therapist-name">Amy Cooper</div>
+        <div class="therapist-creds">MA, LCAS, LCMHC, CSI</div>
+        <a href="#" class="btn-email" onclick="openModal(); return false;">Email Amy</a>
+        <div class="social-row">
+          <a href="#" class="social-icon" aria-label="Instagram">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Twitter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Facebook">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="LinkedIn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V9h4v2.5A6 6 0 0 1 16 8z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="about-me-text reveal from-right">
+        <span class="section-label">About Amy</span>
+        <h2>A Human First,<br>Therapist Second</h2>
+        <p>Hello and welcome. I believe the foundation of healing is a safe place to land, and my practice is built on the truth that we heal through connection.</p>
+        <p>With extensive experience in agency and non-profit settings, I specialize in helping adolescents and adults navigate substance use, trauma, anxiety, and major life transitions. While I am a Licensed Clinical Addiction Specialist and Certified Clinical Supervisor, I prioritize being a human first.</p>
+        <p>At My Comfy Couch Counseling, I trade clinical stiffness for genuine empathy. I&rsquo;m here to listen without judgment and guide you with radical acceptance, ensuring you never have to navigate your recovery alone.</p>
+        <p>Let&rsquo;s reclaim your strength together.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact-section">
+  <div class="tagline-bg-text">Heal</div>
+  <div class="container">
+    <div class="tagline-grid">
+      <div class="tagline-content">
+        <span class="tagline-pre">My Comfy Couch Counseling</span>
+        <div class="tagline-words" id="taglineWords">
+          <span>Seen.</span>
+          <span>Heard.</span>
+          <span>Whole Again.</span>
+        </div>
+        <div class="tagline-cta reveal reveal-d3">
+          <a href="#" class="btn-book theranest-booking-link" target="_blank" rel="noopener noreferrer">Request an Appointment</a>
+        </div>
+      </div>
+      <div class="tagline-visual reveal from-right">
+        <div class="blob-img-wrap">
+          <img src="Images/couchend.png" alt="Person in reflection" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        My Comfy Couch<br>Counseling, PLLC
+        <small>A soft place for hard conversations</small>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Location</h4>
+          <p>1422 East Main St, PMB# 126</p>
+          <p>Lincolnton, NC 28092</p>
+          <p style="margin-top:10px; color:rgba(255,255,255,0.28);">Telehealth available statewide in NC</p>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:9803894291">(980) 389-4291</a>
+          <a href="mailto:amycooper@mycomfycouchcounseling.com">amycooper@mycomfycouchcounseling.com</a>
+          <a href="https://mycomfycouchcounseling.com" target="_blank">mycomfycouchcounseling.com</a>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="#about-intro">About</a>
+          <a href="#about-me">Meet Amy</a>
+          <a href="#" class="theranest-booking-link" target="_blank" rel="noopener noreferrer">Book Appointment</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2025 My Comfy Couch Counseling, PLLC. All rights reserved.</span>
+      <span>Lincolnton, NC</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  /* TheraNest client portal — replace with your booking URL when ready */
+  const THERANEST_BOOKING_URL = 'https://YOUR-THERANEST-BOOKING-LINK-HERE';
+  document.querySelectorAll('.theranest-booking-link').forEach(function(link) {
+    link.href = THERANEST_BOOKING_URL;
+  });
+
+  /* PARALLAX HERO */
+  const heroBg = document.getElementById('heroBg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight * 1.2) {
+      heroBg.style.transform = 'translateY(' + (y * 0.32) + 'px)';
+    }
+    document.getElementById('navbar').classList.toggle('scrolled', y > 30);
+  }, {passive: true});
+
+  /* SCROLL REVEAL */
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(r => revObs.observe(r));
+
+  /* TAGLINE WORD REVEAL */
+  const tagObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      document.querySelectorAll('#taglineWords span').forEach(s => s.classList.add('visible'));
+      tagObs.disconnect();
+    }
+  }, { threshold: 0.35 });
+  tagObs.observe(document.getElementById('taglineWords'));
+
+  /* MOBILE NAV */
+  function toggleNav() { document.getElementById('navLinks').classList.toggle('open'); }
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 900) document.getElementById('navLinks').classList.remove('open');
+  }, { passive: true });
+
+  /* MODAL */
+  function openModal() {
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  /* FORMS */
+  function validateFields(ids) {
+    var ok = true;
+    ids.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = '#c0392b';
+        el.addEventListener('input', function() { el.style.borderColor = ''; }, {once: true});
+        ok = false;
+      }
+    });
+    return ok;
+  }
+  function submitContact() {
+    if (!validateFields(['cFirstName','cLastName','cEmail','cMessage'])) { showToast('Please fill in all required fields.'); return; }
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('contactSuccess').style.display = 'block';
+    showToast('Message sent');
+  }
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(function() { t.classList.remove('show'); }, 3500);
+  }
+  var di = document.getElementById('bDate');
+  if (di) di.min = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>
